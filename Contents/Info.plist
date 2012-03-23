@@ -16,15 +16,17 @@
 	<string>hook</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>PlexFrameworkVersion</key>
-	<string>2</string>
+	<key>PlexClientPlatformExclusions</key>
+	<string>Roku</string>
 	<key>PlexClientPlatforms</key>
 	<string>*</string>
-	<key>PlexPluginMode</key>
-	<string>AlwaysOn</string>
+	<key>PlexFrameworkVersion</key>
+	<string>2</string>
 	<key>PlexMediaContainer</key>
 	<array>
 		<string>Flash</string>
 	</array>
+	<key>PlexPluginMode</key>
+	<string>AlwaysOn</string>
 </dict>
 </plist>
