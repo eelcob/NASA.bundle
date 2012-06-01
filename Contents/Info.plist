@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.plexapp.plugins.nasa</string>
+	<key>PlexClientPlatformExclusions</key>
+	<string>Roku</string>
+	<key>PlexClientPlatforms</key>
+	<string>*</string>
+	<key>PlexFrameworkVersion</key>
+	<string>2</string>
+	<key>PlexMediaContainer</key>
+	<array>
+		<string>Flash</string>
+		<string>FLV</string>
+		<string>M4V</string>
+		<string>MP4</string>
+	</array>
+	<key>PlexFrameworkFlags</key>
+  	<array>
+    	<string>UseRealRTMP</string>
+  	</array>
+  	<key>PlexSearchServices</key>
+	<dict>
+		<key>NASA</key>
+		<dict>
+			<key>Identifier</key>
+			<string>com.plexapp.plugins.nasa</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

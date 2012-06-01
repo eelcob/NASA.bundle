@@ -1,0 +1,22 @@
+{
+  "nasa"              : "NASA",
+  "nasatv"            : "NASA TV",
+  "recent"            : "Most Recent Videos",
+  "more_recent"       : "More Recent Videos...",
+  "popular"           : "Most Watched Videos",
+  "top_rated"         : "Top Rated Videos",
+  "search"            : "Search ...",
+  "random"            : "Random",
+  "podcasts"          : "Podcasts",
+  "otherpodcasts"     : "More Podcasts",
+  "archives"          : "Archives",
+  "previouspage"      : "Previous Page...",
+  "nextpage"          : "Next Page...",
+  "page"              : "Page",
+  "featured"          : "Featured Videos",
+  "nasahdtv"          : "NASA TV (HD)",
+  "live-iss-stream"   : "NASA TV Live ISS Stream",
+  "nasa-educational"  : "NASA TV Educational Channel",
+  "nasa-media-channel": "NASA TV Media Channel",
+  "nasa-mobile"       : "NASA Mobile Channel"
+}

@@ -1,0 +1,39 @@
+SEARCH_URL = 'http://cdn-api.vmixcore.com/apis/media.php?action=searchMedia&export=JSONP&atoken=cf15596810c05b64c422e071473549f4&fields=title,description&limit=%s&start=%s&query=%s'
+
+def Search(query):
+  oc = ObjectContainer(title2='Search Results')
+
+  url = SEARCH_URL % (15,0,query)
+
+  Log('SEARCH URL is ---->' + url)
+  
+  #def ParseJSON(sender = None, url= None, pagenum = 0, total_pages = 5, videos_per_page = 15):
+  #dir = ObjectContainer(replaceParent = (pagenum>0))
+
+  #if (pagenum >0):
+  #  dir.Append(Function(DirectoryObject(ParseJSON,title='Previous Page'),url = url,pagenum = pagenum-1))
+
+  jsondata = JSON.ObjectFromURL(url)
+  for item in jsondata['media']:
+    Log(item['token'])
+
+    #oc.add(VideoClipObject(GetVideoFromToken,title=item['title'], thumb=item['thumbnail'][0]['url'],duration=int(item['duration'])*1000),token=item['token']))
+    oc.add(VideoClipObject(url=url, title=item['title'], duration=int(item['duration']*1000, thumb=Callback(Thumb, item['thumbnail'][0]['url'])))
+
+  # if (pagenum <total_pages):
+  #   dir.Append(Function(DirectoryObject(ParseJSON,title='Next Page'),url = url,pagenum = pagenum+1))
+  
+  #return dir   
+  
+  
+    
+  return  oc
+
+def Thumb(url):
+  if url:
+    try:
+      data = HTTP.Request(url, cacheTime=CACHE_1MONTH).content
+      return DataObject(data, 'image/jpeg')
+    except:
+      return Redirect(R('icon-default.png'))
+  return None
