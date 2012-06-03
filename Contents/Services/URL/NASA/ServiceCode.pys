@@ -82,7 +82,7 @@ def MediaObjectsForURL(url):
            container = Container.MP4,
            audio_channels = 2,
            bitrate = 816,
-           parts = [PartObject(key=Callback(PlayVideo, url=url))]
+           parts = [PartObject(key=Callback(PlayVideo, url=url, ext='m4v'))]
            )
         ]
   elif 'vmixcore' in url:
@@ -99,12 +99,12 @@ def MediaObjectsForURL(url):
            parts = [PartObject(key=Callback(PlayVideo, url=url))]
            )
         ]
-  elif url[-4:] == '.mp3' or url[-4:] == '.MP3' and 'TWAN' in url:
+  elif url[-4:].lower() == '.mp3' and 'TWAN' in url:
     # Looking at TW@N Podcast
     Log('<<<< NASA-hosted TW@N mp3 >>>>')
     return [
        MediaObject(
-            parts = [PartObject(key=Callback(PlayAudio, url=url))],
+            parts = [PartObject(key=Callback(PlayAudio, url=url, ext='mp3'))],
             container = Container.MP3,
             bitrate = 128,
             audio_codec = AudioCodec.MP3,
@@ -116,7 +116,7 @@ def MediaObjectsForURL(url):
     Log('<<<< NASA-hosted mp3 >>>>')
     return [
        MediaObject(
-            parts = [PartObject(key=Callback(PlayAudio, url=url))],
+            parts = [PartObject(key=Callback(PlayAudio, url=url, ext='mp3'))],
             container = Container.MP3,
             bitrate = 128,
             audio_codec = AudioCodec.MP3,
@@ -146,7 +146,7 @@ def PlayVideo(url):
   return Redirect(url)
 
 def PlayAudio(url):
-  Log('Attempting to play: ' + url)
+  #Log('Attempting to play: ' + url)
   return Redirect(url)
 
 def PlayPhoto(url):

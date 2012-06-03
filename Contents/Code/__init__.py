@@ -146,11 +146,11 @@ def PodcastChooser(mediaType):
     podcast = RSS.FeedFromURL(url, cacheTime=CACHE_RSS)
     thumb = podcast.feed.image.href
 
-    if mediaType == 'video' and 'This Week @NASA' in title:
-        # Skip this podcast for now -- PMS doesn't like it (possibly due to bad MIME type from server)
-        pass
-    else:
-        oc.add(DirectoryObject(key=Callback(PodcastEpisodes, title=title, url=url), title=title, thumb=Callback(Thumb, url=thumb)))
+    # if mediaType == 'video' and 'This Week @NASA' in title:
+    #   # Skip this podcast for now -- PMS doesn't like it (possibly due to bad MIME type from server)
+    #   pass
+    # else:
+    oc.add(DirectoryObject(key=Callback(PodcastEpisodes, title=title, url=url), title=title, thumb=Callback(Thumb, url=thumb)))
     
   return oc
 
@@ -209,11 +209,11 @@ def PodcastEpisodes(title, url):
     if (url.count('mp3') > 0) :
       oc.add(TrackObject(url=url, title=title, summary=summary, duration=duration, thumb=thumb))
     else:
-      if 'This Week @ NASA' in title:
-        # Skip this podcast for now -- PMS doesn't like it (possibly due to bad MIME type from server)
-        pass
-      else:
-        oc.add(VideoClipObject(url=url, title=title, summary=summary, duration=0, thumb=thumb))
+      # if 'This Week @ NASA' in title:
+      #   # Skip this podcast for now -- PMS doesn't like it (possibly due to bad MIME type from server)
+      #   pass
+      # else:
+      oc.add(VideoClipObject(url=url, title=title, summary=summary, duration=0, thumb=thumb))
 
   return oc
 
