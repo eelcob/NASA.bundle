@@ -3,10 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>Search</key>
-  	<dict>
-  		<key>NASA</key>
-  	<dict/>
-	</dict>
+    <dict>
+      <key>NASA</key>
+      <dict>
+        <key>Identifier</key>
+        <string>com.plexapp.plugins.nasa</string>
+      </dict>
+    </dict>
   <key>URL</key>
   	<dict>
     	<key>NASA</key>
@@ -14,10 +17,13 @@
       	<key>URLPatterns</key>
       		<array>
         		<string>http://([^.]+.)?nasa.gov/.+</string>
+            <!-- <string>http://([^.]+.)?vmixcore.com\/core\/423\/.+</string> -->
+            <!-- <string>http://([^.]+.)?vmixcore.com\/vmixcore\/dl\/.+</string> -->
+            <string>http://([^.]+.)?vmixcore.com\/vmixcore\/play\/.+</string>
       		</array>
       	<key>TestURLs</key>
       		<array>
-        		<string>http://www.ustream.tv/channel/live-iss-stream</string>
+        		<string>http://www.nasa.gov/multimedia/videogallery/index.html?media_id=145106131</string>
       		</array>
     	</dict>
   	</dict>

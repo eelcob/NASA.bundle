@@ -1,3 +1,6 @@
+VMIX_ATOKEN            = 'cf15596810c05b64c422e071473549f4'
+VMIX_METADATA_URL      = 'http://cdn-api.vmixcore.com/apis/media.php?action=getMedia&media_id=%s&atoken=%s'
+
 def MetadataObjectForURL(url):
 
   # Extract the details available directly form the page.
@@ -5,7 +8,6 @@ def MetadataObjectForURL(url):
   # title = page.xpath('//*[@id="current_video_info"]/h2')[0].text
   # description = page.xpath('//*[@id="current_video_info"]/p')[0].text
   # thumb = page.xpath("//head//meta[@property='og:image']")[0].get('content')
-
 
   return VideoClipObject(
        title = 'temp title',
@@ -54,126 +56,100 @@ def MediaObjectsForURL(url):
   Log('In media objects for URL...')
   Log('url ---> ' + url)
   
-  # Play request (returns XML to be parsed for .mp4):
-  # http://cdn-media.vmixcore.com/vmixcore/play/uvp?token=V0hSCOGPb6M8jJ8WHAVqJ3v9DJZWuogato&player_name=unified_video_player&output=xml
-  
-
-
-
-  # for token in vmixTokens:
-
-  #   #Log('TOKEN -----> ' + token['token'])
-    
-  #   rawxml = HTTP.Request(VMIX_PLAY_URL % token['token']).content
-  #   Log('rawXML ---> ' + rawxml)
-  #   rawxml = rawxml.replace('<![CDATA[','')
-  #   rawxml = rawxml.replace(']]>','')
-  #   #Log('cleaned rawXML --> ' + rawxml)
-  #   playxml = XML.ElementFromString(rawxml)
-
-  #   #Log('PLAY XML ---> ' + XML.StringFromElement(playxml))
-
-  #   #Log('MP4 URL ---> ' + XML.StringFromElement(XML.ElementFromURL()))
-
-  #   mp4url = playxml.xpath('//play_url')[0].text
-  #   Log('mp4url --->' + mp4url)
-  #   #Log('mp4obj -->' + XML.StringFromElement(mp4url))
-  #   #Log('mp4url ----->' + mp4url)
-  if url.find('/mp4/'): 
-    # Regular podcast...
+  if 'nasa.gov/mp4/' in url: 
+    # We're probably looking at a regular nasa-hosted mp4 podcast (most common)...
+    Log('<<<< NASA-hosted mp4 >>>>')
+    Log(url)
     return [
        MediaObject(
            video_codec = VideoCodec.H264,
            audio_codec = AudioCodec.AAC,
            video_resolution = 720,
-           container = 'MP4',
+           container = Container.MP4,
            audio_channels = 2,
            bitrate = 3193,
            parts = [PartObject(key=Callback(PlayVideo, url=url))]
            )
         ]
-  elif url[-4:] == '.m4v':
-    Log('FOUND .m4v')
+  elif 'nasa.gov' in url and url[-4:] == '.m4v':
+    # We're probably looking at a nasa-hosted .m4v podcast...
+    Log('<<<< NASA-hosted m4v >>>>')
     return [
        MediaObject(
            video_codec = VideoCodec.H264,
            audio_codec = AudioCodec.AAC,
            video_resolution = 270,
-           container = 'M4V',
+           container = Container.MP4,
            audio_channels = 2,
            bitrate = 816,
            parts = [PartObject(key=Callback(PlayVideo, url=url))]
            )
         ]
+  elif 'vmixcore' in url:
+    # We're probably looking at a vmix-hosted .m4v podcast...
+    Log('<<<< vmix-hosted mp4 >>>>')
+    return [
+       MediaObject(
+           video_codec = VideoCodec.H264,
+           audio_codec = AudioCodec.AAC,
+           video_resolution = 720,
+           container = Container.MP4,
+           audio_channels = 2,
+           bitrate = 816,
+           parts = [PartObject(key=Callback(PlayVideo, url=url))]
+           )
+        ]
+  elif url[-4:] == '.mp3' or url[-4:] == '.MP3' and 'TWAN' in url:
+    # Looking at TW@N Podcast
+    Log('<<<< NASA-hosted TW@N mp3 >>>>')
+    return [
+       MediaObject(
+            parts = [PartObject(key=Callback(PlayAudio, url=url))],
+            container = Container.MP3,
+            bitrate = 128,
+            audio_codec = AudioCodec.MP3,
+            audio_channels = 2
+            )
+       ]
+  elif url[-4:].lower() == '.mp3':
+    # We're probably looking at an audio podcast...
+    Log('<<<< NASA-hosted mp3 >>>>')
+    return [
+       MediaObject(
+            parts = [PartObject(key=Callback(PlayAudio, url=url))],
+            container = Container.MP3,
+            bitrate = 128,
+            audio_codec = AudioCodec.MP3,
+            audio_channels = 1
+            )
+       ]
+  elif url[-4:].lower() == '.jpg':
+    # Looking at a photo...
+    Log('<<<< NASA-hosted photo >>>>')
+    return [
+       MediaObject(
+            parts = [PartObject(key=url)]
+            #parts = [PartObject(key=Callback(PlayPhoto, url=url))]
+            )
+       ]
   else:
+    Log('Can\'t extract media object from url: ' + url)
     pass
-  #   # Live ustream feed...
-  #   return [
-  #      MediaObject(
-  #          video_codec = VideoCodec.H264,
-  #          audio_codec = AudioCodec.AAC,
-  #          video_resolution = 288,
-  #          container = 'mp4',
-  #          audio_channels = 2,
-  #          bitrate = 501,
-  #          parts = [PartObject(key=Callback(PlayVideo, url=url, format=0))]
-  #      )
-  #    ]
-
-     # These other formats are available, but they're so similar it's probably not worth giving the choice.
-
-     # MediaObject(
-     #     video_codec = VideoCodec.H264,
-     #     audio_codec = AudioCodec.AAC,
-     #     video_resolution = 226,
-     #     container = 'mp4',
-     #     audio_channels = 2,
-     #     bitrate = 379,
-     #     parts = [PartObject(key=Callback(PlayVideo, url=url, format=1))]
-     # ),
-     # MediaObject(
-     #     video_codec = VideoCodec.H264,
-     #     audio_codec = AudioCodec.AAC,
-     #     video_resolution = 288,
-     #     container = 'mp4',
-     #     audio_channels = 2,
-     #     bitrate = 501,
-     #     parts = [PartObject(key=Callback(PlayVideo, url=url, format=2))]
-     # )
     
-def PlayVideo(url):
+def PlayVideo(url):  
+  if 'vmixcore' in url:
+    # We're looking at a vmix-hosted video, need to go grab the playable URL from the metadata.
+    rawxml = HTTP.Request(url).content
+    playxml = XML.ElementFromString(rawxml.replace('<![CDATA[','').replace(']]>',''))
+    url = playxml.xpath('//play_url')[0].text
 
-  # ATOKEN            = 'cf15596810c05b64c422e071473549f4'
-  # VMIX_METADATA_URL = 'http://cdn-api.vmixcore.com/apis/media.php?action=getMedia&media_id=%s&atoken=%s'
-  # VMIX_PLAY_URL     = 'http://cdn-media.vmixcore.com/vmixcore/play/uvp?token=%s&player_name=unified_video_player&output=xml'
+  return Redirect(url)
 
-  # # Make this request with media_id from url:
-  # # http://cdn-api.vmixcore.com/apis/media.php?action=getMedia&media_id=144284961&atoken=cf15596810c05b64c422e071473549f4
-  # media_id = url[url.rfind('=')+1:]
-  # vmixJSON = JSON.ObjectFromURL(VMIX_METADATA_URL % (media_id, ATOKEN))
+def PlayAudio(url):
+  Log('Attempting to play: ' + url)
+  return Redirect(url)
 
-  # # Resulting JSON will have the tokens for the various SWF formats:
-  # # vmixTokens = vmixJSON['formats']['format']
-  # # it = 0
-  # # for token in vmixTokens:
-  # #   Log('Token ' + str(it) + ' ---> ' + token['token'])
-  # #   Log('HTTP req ---> ' + VMIX_PLAY_URL % vmixTokens[it]['token'])
-  # #   rawxml = HTTP.Request(VMIX_PLAY_URL % vmixTokens[it]['token']).content
-  # #   rawxml = rawxml.replace('<![CDATA[','')
-  # #   rawxml = rawxml.replace(']]>','')
-  # #   playxml = XML.ElementFromString(rawxml)
-  # #   mp4url = playxml.xpath('//play_url')[0].text
-  # #   Log('mp4url --->' + mp4url)
-  # #   it = it + 1
-  
-  # token = vmixJSON['formats']['format'][format]['token']
-  # rawxml = HTTP.Request(VMIX_PLAY_URL % token).content
-  # rawxml = rawxml.replace('<![CDATA[','')
-  # rawxml = rawxml.replace(']]>','')
-  # playxml = XML.ElementFromString(rawxml)
-  # mp4url = playxml.xpath('//play_url')[0].text
-
-  #return url
+def PlayPhoto(url):
   return Redirect(url)
 
 def NormalizeURL(url):
