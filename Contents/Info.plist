@@ -13,6 +13,24 @@
 	<key>PlexMediaContainer</key>
 	<array>
 		<string>Flash</string>
+		<string>FLV</string>
+		<string>M4V</string>
+		<string>MP4</string>
+		<string>MP3</string>
 	</array>
+	<key>PlexFrameworkFlags</key>
+  	<array>
+    	<string>UseRealRTMP</string>
+  	</array>
+  	<!--
+  	<key>PlexSearchServices</key>
+	<dict>
+		<key>NASA</key>
+		<dict>
+			<key>Identifier</key>
+			<string>com.plexapp.plugins.nasa</string>
+		</dict>
+	</dict>
+	-->
 </dict>
 </plist>
